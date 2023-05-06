@@ -17,9 +17,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		return {
 			redirect: {
 				permanent: false,
-				destination: `${
-					endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
-				}?utm_source=fb_page&utm_medium=NewsvVer&utm_campaign=SQR`,
+				destination: `${endpoint.replace(/(\/graphql\/)/, '/') + encodeURIComponent(path) }?utm_source=fb_page&utm_medium=NewsvVer&utm_campaign=SQR`,
+
 			},
 		};
 	}
