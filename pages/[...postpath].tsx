@@ -18,9 +18,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			redirect: {
 				permanent: false,
 				destination: `${
-    endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
-}?utm_source=fb_page&utm_medium=NewsvVer&utm_campaign=SQR`,
-
+					endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
+				}?utm_source=fb_page&utm_medium=Cinema&utm_campaign=SQR`,
 			},
 		};
 	}
@@ -41,7 +40,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 				}
 				seo{
 				opengraphTitle
-				title
       opengraphImage{
         sourceUrl
       }
