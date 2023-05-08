@@ -8,7 +8,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const graphQLClient = new GraphQLClient(endpoint);
 	const referringURL = ctx.req.headers?.referer || null;
 	const pathArr = ctx.query.postpath as Array<string>;
-	const path = encodeURI(pathArr.join('/'));
+	const path = pathArr.map((p) => encodeURIComponent(p)).join('/');
 	console.log(path);
 	const fbclid = ctx.query.fbclid;
 
