@@ -8,7 +8,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const graphQLClient = new GraphQLClient(endpoint);
 	const referringURL = ctx.req.headers?.referer || null;
 	const pathArr = ctx.query.postpath as Array<string>;
-	const path = pathArr.map((p) => encodeURIComponent(p)).join('/');
+	const path = pathArr.join('/');
 	console.log(path);
 	const fbclid = ctx.query.fbclid;
 
@@ -18,10 +18,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			redirect: {
 				permanent: false,
 				destination: `${
-  endpoint.replace(/(\/graphql\/)/, '/') + encodeURIComponent(path as string)
-}?utm_source=fb_page&utm_medium=Cinema&utm_campaign=SQR`,
-
-
+					endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
+				}?utm_source=fb_page&utm_medium=Cinema&utm_campaign=SQR`,
 			},
 		};
 	}
