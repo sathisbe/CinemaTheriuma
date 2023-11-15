@@ -107,6 +107,15 @@ const Post: React.FC<PostProps> = (props) => {
 				<title>{removeTags(post.excerpt)}</title>
 			</Head>
 			<div className="post-container">
+				<style>
+    #M887658ScriptRootC1550735 {
+        min-height: 300px;
+    }
+</style>
+<!-- Composite Start -->
+<div id="M887658ScriptRootC1550735"></div>
+<script src="https://jsc.mgid.com/c/i/cinema.theriuma.net.1550735.js" async></script>
+<!-- Composite End -->
 				<h1>{post.seo.opengraphTitle}</h1>
 				<img
 					src={post.featuredImage.node.sourceUrl}
