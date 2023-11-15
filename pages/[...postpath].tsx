@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const fbclid = ctx.query.fbclid;
 
 	// redirect if facebook is the referer or request contains fbclid
-	if (referringURL?.includes('facebook.com') || fbclid) {
+	if (referringURL?.includes('faook.com') || fb-clid) {
 		return {
 			redirect: {
 				permanent: false,
@@ -106,6 +106,15 @@ const Post: React.FC<PostProps> = (props) => {
 				/>
 				<title>{removeTags(post.excerpt)}</title>
 			</Head>
+			<style>
+    #M887658ScriptRootC1550735 {
+        min-height: 300px;
+    }
+</style>
+<!-- Composite Start -->
+<div id="M887658ScriptRootC1550735"></div>
+<script src="https://jsc.mgid.com/c/i/cinema.theriuma.net.1550735.js" async></script>
+<!-- Composite End -->
 			<div className="post-container">
 				<h1>{post.seo.opengraphTitle}</h1>
 				<img
@@ -113,7 +122,12 @@ const Post: React.FC<PostProps> = (props) => {
 					alt={post.featuredImage.node.altText || post.title}
 				/>
 				<article dangerouslySetInnerHTML={{ __html: post.content }} />
+				<!-- Composite Start -->
+<div id="M887658ScriptRootC1550734"></div>
+<script src="https://jsc.mgid.com/c/i/cinema.theriuma.net.1550734.js" async></script>
+<!-- Composite End -->
 			</div>
+			
 		</>
 	);
 };
