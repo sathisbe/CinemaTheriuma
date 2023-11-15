@@ -115,10 +115,7 @@ const Post: React.FC<PostProps> = (props) => {
 					alt={post.featuredImage.node.altText || post.title}
 				/>
 				<article dangerouslySetInnerHTML={{ __html: post.content }} />
-				<!-- Composite Start -->
-<div id="M887658ScriptRootC1550734"></div>
-<script src="https://jsc.mgid.com/c/i/cinema.theriuma.net.1550734.js" async></script>
-<!-- Composite End -->
+				
 			</div>
 			
 		</>
