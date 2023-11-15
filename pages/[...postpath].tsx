@@ -107,6 +107,7 @@ const Post: React.FC<PostProps> = (props) => {
 				<title>{removeTags(post.excerpt)}</title>
 				
 <script src="https://jsc.mgid.com/c/i/cinema.theriuma.net.1550735.js" async></script>
+				<script src="https://jsc.mgid.com/c/i/cinema.theriuma.net.1550734.js" async></script>
 			</Head>
 			<div className="post-container">
 				<style>
@@ -125,6 +126,9 @@ const Post: React.FC<PostProps> = (props) => {
 					alt={post.featuredImage.node.altText || post.title}
 				/>
 				<article dangerouslySetInnerHTML={{ __html: post.content }} />
+				<div id="M887658ScriptRootC1550734"></div>
+        
+
 			</div>
 		</>
 	);
