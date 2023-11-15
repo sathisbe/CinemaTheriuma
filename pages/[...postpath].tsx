@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 				permanent: false,
 				destination: `${
 					endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
-				}?utm_source=fb_page&utm_medium=Cinema&utm_campaign=SQR`,
+				}`,
 			},
 		};
 	}
