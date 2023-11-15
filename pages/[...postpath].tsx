@@ -98,7 +98,7 @@ const removeClassFromContent = (htmlContent: string, className: string) => {
     return wrapper.innerHTML;
   };
 
-  const sanitizedContent = removeClassFromContent(post.content, 'your-class-to-remove');
+  const sanitizedContent = removeClassFromContent(post.content, 'quads-ll');
 
 
 
