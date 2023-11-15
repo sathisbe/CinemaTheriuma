@@ -141,8 +141,7 @@ const removeClassFromContent = (htmlContent: string, className: string) => {
 					src={post.featuredImage.node.sourceUrl}
 					alt={post.featuredImage.node.altText || post.title}
 				/>
-        <article dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
-				<div id="M887658ScriptRootC1550734"></div>
+<article dangerouslySetInnerHTML={{ __html: sanitizedContent }} />				<div id="M887658ScriptRootC1550734"></div>
         
 
 			</div>
