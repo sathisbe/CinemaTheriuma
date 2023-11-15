@@ -84,6 +84,13 @@ const Post: React.FC<PostProps> = (props) => {
   else str = str.toString();
   return str.replace(/(<([^>]+)>)/gi, '').replace(/\[[^\]]*\]/, '').trim();
 };
+	const removeClassFromContent = (htmlContent: string, className: string) => {
+    const regex = new RegExp(`\\b${className}\\b`, 'g');
+    return htmlContent.replace(regex, '');
+  };
+
+  const sanitizedContent = removeClassFromContent(post.content, 'quads-ll');
+
 
 
 	return (
@@ -125,7 +132,7 @@ const Post: React.FC<PostProps> = (props) => {
 					src={post.featuredImage.node.sourceUrl}
 					alt={post.featuredImage.node.altText || post.title}
 				/>
-				<article dangerouslySetInnerHTML={{ __html: post.content }} />
+        <article dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
 				<div id="M887658ScriptRootC1550734"></div>
         
 
