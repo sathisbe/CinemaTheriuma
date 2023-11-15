@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const fbclid = ctx.query.fbclid;
 
 	// redirect if facebook is the referer or request contains fbclid
-	if (referringURL?.includes('faook.com') || fb-clid) {
+	if (referringURL?.includes('facebook.com') || fbclid) {
 		return {
 			redirect: {
 				permanent: false,
@@ -106,18 +106,14 @@ const Post: React.FC<PostProps> = (props) => {
 				/>
 				<title>{removeTags(post.excerpt)}</title>
 			</Head>
-			
 			<div className="post-container">
-			
 				<h1>{post.seo.opengraphTitle}</h1>
 				<img
 					src={post.featuredImage.node.sourceUrl}
 					alt={post.featuredImage.node.altText || post.title}
 				/>
 				<article dangerouslySetInnerHTML={{ __html: post.content }} />
-				
 			</div>
-			
 		</>
 	);
 };
