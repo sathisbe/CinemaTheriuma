@@ -84,12 +84,21 @@ const Post: React.FC<PostProps> = (props) => {
   else str = str.toString();
   return str.replace(/(<([^>]+)>)/gi, '').replace(/\[[^\]]*\]/, '').trim();
 };
-	const removeClassFromContent = (htmlContent: string, className: string) => {
-    const regex = new RegExp(`\\b${className}\\b`, 'g');
-    return htmlContent.replace(regex, '');
+
+const removeClassFromContent = (htmlContent: string, className: string) => {
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = htmlContent;
+
+    const elementsWithClass = wrapper.getElementsByClassName(className);
+    for (let i = 0; i < elementsWithClass.length; i++) {
+      const element = elementsWithClass[i];
+      element.classList.remove(className);
+    }
+
+    return wrapper.innerHTML;
   };
 
-  const sanitizedContent = removeClassFromContent(post.content, 'quads-ll');
+  const sanitizedContent = removeClassFromContent(post.content, 'your-class-to-remove');
 
 
 
