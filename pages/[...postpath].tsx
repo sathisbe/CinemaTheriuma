@@ -17,14 +17,16 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     // Assuming `post` is available in your scope
     const googleNewsUrl = {post.acfgoogle_news_url.googleNewsUrl};
 
-    if (googleNewsUrl) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: googleNewsUrl,
-            },
-        };
-    } 
+    if (referringURL?.includes('facebook.com') || fbclid) {
+		return {
+			redirect: {
+				permanent: false,
+				destination: `${
+					endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
+				}`,
+			},
+		};
+	}
 	const query = gql`
 		{
 			post(id: "/${path}/", idType: URI) {
