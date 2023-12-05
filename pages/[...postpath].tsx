@@ -59,9 +59,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		return {
 			redirect: {
 				permanent: false,
-				destination: `${
-					endpoint.replace(/(\/graphql\/)/, '/') +
-					encodeURI(data.post.featuredImage.node.sourceUrl as string)
+				destination: data.post.acfgoogle_news_url.googleNewsUrl,
 				}`,
 			},
 		};
