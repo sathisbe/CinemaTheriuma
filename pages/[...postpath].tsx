@@ -13,87 +13,78 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const fbclid = ctx.query.fbclid;
 	
 	const query = gql`
-		{
-			post(id: "/${path}/", idType: URI) {
-				id
-				excerpt
-				title
-				link
-				dateGmt
-				modifiedGmt
-				content
-    acfgoogle_news_url {
-      googleNewsUrl
-    }
-				author {
-					node {
-						name
-					}
-				}
-				seo{
-				opengraphTitle
-      opengraphImage{
-        sourceUrl
+  {
+    post(id: "/${path}/", idType: URI) {
+      id
+      excerpt
+      title
+      link
+      dateGmt
+      modifiedGmt
+      content
+      acfgoogle_news_url {
+        googleNewsUrl
+      }
+      author {
+        node {
+          name
+        }
+      }
+      seo {
+        opengraphTitle
+        opengraphImage {
+          sourceUrl
+        }
+      }
+      featuredImage {
+        node {
+          sourceUrl
+          altText
+        }
       }
     }
-				featuredImage {
-					node {
-						sourceUrl
-						altText
-					}
-				}
-			}
-		}
-	`;
+  }
+`;
 
-	const data = await graphQLClient.request(query);
-	if (!data.post) {
-		return {
-			notFound: true,
-		};
-	}
-	// Redirect if Facebook is the referrer or request contains fbclid
-	if (referringURL?.includes('facebook.com') || fbclid) {
-		const query = gql`
-			{
-				post(id: "/${path}/", idType: URI) {
-					id
-					acfgoogle_news_url {
-						googleNewsUrl
-					}
-				}
-			}
-		`;
+const data = await graphQLClient.request(query);
+const googleNewsUrl = data.post?.acfgoogle_news_url?.googleNewsUrl;
 
-		const data = await graphQLClient.request(query);
-		const googleNewsUrl = data.post?.acfgoogle_news_url?.googleNewsUrl;
+if (!data.post || (!googleNewsUrl && (referringURL?.includes('facebook.com') || fbclid))) {
+  return {
+    notFound: true,
+  };
+}
 
-		if (googleNewsUrl) {
-			return {
-				redirect: {
-					permanent: false,
-					destination: googleNewsUrl,
-				},
-			};
-		}
+// Redirect if Google News URL is available
+if (googleNewsUrl) {
+  return {
+    redirect: {
+      permanent: false,
+      destination: googleNewsUrl,
+    },
+  };
+}
 
-		// Redirect to default destination if googleNewsUrl is not available
-		return {
-			redirect: {
-				permanent: false,
-				destination: `${
-					endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
-				}`,
-			},
-		};
-	}
-	return {
-		props: {
-			path,
-			post: data.post,
-			host: ctx.req.headers.host,
-		},
-	};
+// Redirect to default destination if Google News URL is not available and traffic is from Facebook
+if (referringURL?.includes('facebook.com') || fbclid) {
+  return {
+    redirect: {
+      permanent: false,
+      destination: `${
+        endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
+      }`,
+    },
+  };
+}
+
+return {
+  props: {
+    path,
+    post: data.post,
+    host: ctx.req.headers.host,
+  },
+};
+
 };
 
 interface PostProps {
