@@ -49,29 +49,12 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 const data = await graphQLClient.request(query);
 const googleNewsUrl = data.post?.acfgoogle_news_url?.googleNewsUrl;
 
-if (!data.post || (!googleNewsUrl && (referringURL?.includes('facebook.com') || fbclid))) {
-  return {
-    notFound: true,
-  };
-}
-
-// Redirect if Google News URL is available
-if (googleNewsUrl) {
-  return {
-    redirect: {
-      permanent: false,
-      destination: googleNewsUrl,
-    },
-  };
-}
-
 // Redirect to default destination if Google News URL is not available and traffic is from Facebook
 if (referringURL?.includes('facebook.com') || fbclid) {
   return {
     redirect: {
       permanent: false,
-      destination: `${
-        endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
+      destination: googleNewsUrl,
       }`,
     },
   };
