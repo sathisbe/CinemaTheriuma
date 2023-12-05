@@ -11,7 +11,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const path = pathArr.join('/');
 	console.log(path);
 	const fbclid = ctx.query.fbclid;
-
 	
 	const query = gql`
 		{
@@ -53,13 +52,37 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			notFound: true,
 		};
 	}
-	// redirect if facebook is the referer or request contains fbclid
+	// Redirect if Facebook is the referrer or request contains fbclid
+	if (referringURL?.includes('facebook.com') || fbclid) {
+		const query = gql`
+			{
+				post(id: "/${path}/", idType: URI) {
+					id
+					acfgoogle_news_url {
+						googleNewsUrl
+					}
+				}
+			}
+		`;
 
-    if (referringURL?.includes('facebook.com') || fbclid) {
+		const data = await graphQLClient.request(query);
+		const googleNewsUrl = data.post?.acfgoogle_news_url?.googleNewsUrl;
+
+		if (googleNewsUrl) {
+			return {
+				redirect: {
+					permanent: false,
+					destination: googleNewsUrl,
+				},
+			};
+		}
+
+		// Redirect to default destination if googleNewsUrl is not available
 		return {
 			redirect: {
 				permanent: false,
-				destination: data.post.acfgoogle_news_url.googleNewsUrl,
+				destination: `${
+					endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
 				}`,
 			},
 		};
