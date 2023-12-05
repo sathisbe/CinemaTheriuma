@@ -14,13 +14,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 	// redirect if facebook is the referer or request contains fbclid
 	if (referringURL?.includes('facebook.com') || fbclid) {
-		return {
-			redirect: {
-				permanent: false,
-				destination: `${post.acfgoogle_news_url.googleNewsUrl}`,
-			},
-		};
-	}
+    // Assuming `post` is available in your scope
+    const googleNewsUrl = post?.acfgoogle_news_url?.googleNewsUrl;
+
+    if (googleNewsUrl) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: googleNewsUrl,
+            },
+        };
+    } 
 	const query = gql`
 		{
 			post(id: "/${path}/", idType: URI) {
