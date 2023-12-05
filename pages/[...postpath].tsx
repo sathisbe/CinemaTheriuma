@@ -17,9 +17,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		return {
 			redirect: {
 				permanent: false,
-				destination: `${
-					endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
-				}`,
+				destination: `${post.acfgoogle_news_url.googleNewsUrl}`,
 			},
 		};
 	}
@@ -116,13 +114,13 @@ const Post: React.FC<PostProps> = (props) => {
         
 			
 				<h1>{post.seo.opengraphTitle}</h1>
-				<p>{post.acfgoogle_news_url.googleNewsUrl}</p>
+				
 				<img
 					src={post.featuredImage.node.sourceUrl}
 					alt={post.featuredImage.node.altText || post.title}
 				/>
 				<article dangerouslySetInnerHTML={{ __html: post.content }} />
-				<div id="M887658ScriptRootC1550734"></div>
+				
         
 
 			</div>
