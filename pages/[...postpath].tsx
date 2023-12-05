@@ -33,6 +33,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 				dateGmt
 				modifiedGmt
 				content
+    acfgoogle_news_url {
+      googleNewsUrl
+    }
 				author {
 					node {
 						name
@@ -108,21 +111,12 @@ const Post: React.FC<PostProps> = (props) => {
 				/>
 				<title>{removeTags(post.excerpt)}</title>
 				
-<script src="https://jsc.mgid.com/c/i/cinema.theriuma.net.1550735.js" async></script>
-				<script src="https://jsc.mgid.com/c/i/cinema.theriuma.net.1550734.js" async></script>
 			</Head>
 			<div className="post-container">
-				<style>
-          {`
-            #M887658ScriptRootC1550735 {
-                min-height: 300px;
-            }
-          `}
-        </style>
-        <div id="M887658ScriptRootC1550735"></div>
         
 			
 				<h1>{post.seo.opengraphTitle}</h1>
+				<p>{post.acfgoogle_news_url.googleNewsUrl}</p>
 				<img
 					src={post.featuredImage.node.sourceUrl}
 					alt={post.featuredImage.node.altText || post.title}
