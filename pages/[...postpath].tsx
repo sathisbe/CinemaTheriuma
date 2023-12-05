@@ -15,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	// redirect if facebook is the referer or request contains fbclid
 	if (referringURL?.includes('facebook.com') || fbclid) {
     // Assuming `post` is available in your scope
-    const googleNewsUrl = post?.acfgoogle_news_url?.googleNewsUrl;
+    const googleNewsUrl = {post.acfgoogle_news_url.googleNewsUrl};
 
     if (googleNewsUrl) {
         return {
