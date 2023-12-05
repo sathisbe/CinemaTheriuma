@@ -11,7 +11,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const path = pathArr.join('/');
 	console.log(path);
 	const fbclid = ctx.query.fbclid;
-
+	
 	const query = gql`
 		{
 			post(id: "/${path}/", idType: URI) {
@@ -22,20 +22,20 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 				dateGmt
 				modifiedGmt
 				content
-				acfgoogle_news_url {
-					googleNewsUrl
-				}
+    acfgoogle_news_url {
+      googleNewsUrl
+    }
 				author {
 					node {
 						name
 					}
 				}
-				seo {
-					opengraphTitle
-					opengraphImage {
-						sourceUrl
-					}
-				}
+				seo{
+				opengraphTitle
+      opengraphImage{
+        sourceUrl
+      }
+    }
 				featuredImage {
 					node {
 						sourceUrl
@@ -46,7 +46,25 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 		}
 	`;
 
-	try {
+	const data = await graphQLClient.request(query);
+	if (!data.post) {
+		return {
+			notFound: true,
+		};
+	}
+	// Redirect if Facebook is the referrer or request contains fbclid
+	if (referringURL?.includes('facebook.com') || fbclid) {
+		const query = gql`
+			{
+				post(id: "/${path}/", idType: URI) {
+					id
+					acfgoogle_news_url {
+						googleNewsUrl
+					}
+				}
+			}
+		`;
+
 		const data = await graphQLClient.request(query);
 		const googleNewsUrl = data.post?.acfgoogle_news_url?.googleNewsUrl;
 
@@ -59,19 +77,23 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 			};
 		}
 
+		// Redirect to default destination if googleNewsUrl is not available
 		return {
-			props: {
-				path,
-				post: data.post,
-				host: ctx.req.headers.host,
+			redirect: {
+				permanent: false,
+				destination: `${
+					endpoint.replace(/(\/graphql\/)/, '/') + encodeURI(path as string)
+				}`,
 			},
 		};
-	} catch (error) {
-		console.error('GraphQL request error:', error);
-		return {
-			notFound: true,
-		};
 	}
+	return {
+		props: {
+			path,
+			post: data.post,
+			host: ctx.req.headers.host,
+		},
+	};
 };
 
 interface PostProps {
