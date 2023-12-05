@@ -11,63 +11,67 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 	const path = pathArr.join('/');
 	console.log(path);
 	const fbclid = ctx.query.fbclid;
-	
+
 	const query = gql`
-  {
-    post(id: "/${path}/", idType: URI) {
-      id
-      excerpt
-      title
-      link
-      dateGmt
-      modifiedGmt
-      content
-      acfgoogle_news_url {
-        googleNewsUrl
-      }
-      author {
-        node {
-          name
-        }
-      }
-      seo {
-        opengraphTitle
-        opengraphImage {
-          sourceUrl
-        }
-      }
-      featuredImage {
-        node {
-          sourceUrl
-          altText
-        }
-      }
-    }
-  }
-`;
+		{
+			post(id: "/${path}/", idType: URI) {
+				id
+				excerpt
+				title
+				link
+				dateGmt
+				modifiedGmt
+				content
+				acfgoogle_news_url {
+					googleNewsUrl
+				}
+				author {
+					node {
+						name
+					}
+				}
+				seo {
+					opengraphTitle
+					opengraphImage {
+						sourceUrl
+					}
+				}
+				featuredImage {
+					node {
+						sourceUrl
+						altText
+					}
+				}
+			}
+		}
+	`;
 
-const data = await graphQLClient.request(query);
-const googleNewsUrl = data.post?.acfgoogle_news_url?.googleNewsUrl;
+	try {
+		const data = await graphQLClient.request(query);
+		const googleNewsUrl = data.post?.acfgoogle_news_url?.googleNewsUrl;
 
-// Redirect to default destination if Google News URL is not available and traffic is from Facebook
-if (referringURL?.includes('facebook.com') || fbclid) {
-  return {
-    redirect: {
-      permanent: false,
-      destination: googleNewsUrl,
-      }`,
-    },
-  };
-}
+		if (googleNewsUrl) {
+			return {
+				redirect: {
+					permanent: false,
+					destination: googleNewsUrl,
+				},
+			};
+		}
 
-return {
-  props: {
-    path,
-    post: data.post,
-    host: ctx.req.headers.host,
-  },
-};
-
+		return {
+			props: {
+				path,
+				post: data.post,
+				host: ctx.req.headers.host,
+			},
+		};
+	} catch (error) {
+		console.error('GraphQL request error:', error);
+		return {
+			notFound: true,
+		};
+	}
 };
 
 interface PostProps {
