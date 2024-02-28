@@ -145,6 +145,7 @@ const Post: React.FC<PostProps> = (props) => {
 					src={post.featuredImage.node.sourceUrl}
 					alt={post.featuredImage.node.altText || post.title}
 				/>
+				<img style="display: none;" src={post.seo.opengraphImage.sourceUrl}></img>
 				<article dangerouslySetInnerHTML={{ __html: post.content }} />
 				
         
